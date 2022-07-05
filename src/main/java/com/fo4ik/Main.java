@@ -9,7 +9,10 @@ public class Main {
         core.setAlive(4, 2);
 
 
-        core.printBoard();
+        for (int i = 0; i < 3; i++) {
+            core.printBoard();
+            core.step();
+        }
 
         System.out.println(core.countAlive(3, 2));
     }

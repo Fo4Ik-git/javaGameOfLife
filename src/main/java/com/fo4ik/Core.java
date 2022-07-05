@@ -37,38 +37,48 @@ public class Core {
     public int countAlive(int x, int y) {
         int count = 0;
 
-        count += this.board[x - 1][y - 1];
-        count += this.board[x][y - 1];
-        count += this.board[x + 1][y - 1];
+        count += getState(x - 1, y - 1);
+        count += getState(x + 1, y - 1);
+        count += getState(x, y - 1);
 
-        count += this.board[x - 1][y];
-        count += this.board[x + 1][y];
+        count += getState(x - 1, y);
+        count += getState(x + 1, y);
 
-        count += this.board[x - 1][y + 1];
-        count += this.board[x][y + 1];
-        count += this.board[x + 1][y + 1];
+        count += getState(x - 1, y + 1);
+        count += getState(x, y + 1);
+        count += getState(x + 1, y + 1);
 
         return count;
     }
 
+    public int getState(int x, int y) {
+        if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
+            return 0;
+        }
+        return this.board[x][y];
+    }
+
     public void step() {
+        int[][] newBoard = new int[width][height];
+
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 int alive = countAlive(x, y);
-                if (this.board[x][y] == 1) {
+                if (getState(x, y) == 1) {
                     if (alive < 2) {
-                        setDead(x, y);
+                        newBoard[x][y] = 0;
                     } else if (alive == 2 || alive == 3) {
-                        setAlive(x, y);
+                        newBoard[x][y] = 1;
                     } else if (alive > 3) {
-                        setDead(x, y);
+                        newBoard[x][y] = 0;
                     }
                 } else {
                     if (alive == 3) {
-                        setAlive(x, y);
+                        newBoard[x][y] = 1;
                     }
                 }
             }
         }
+        this.board = newBoard;
     }
 }
